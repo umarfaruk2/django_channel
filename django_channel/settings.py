@@ -29,7 +29,8 @@ INSTALLED_APPS = [
 
     'syncConsumer_asycConsumer',
     'routing',
-    'real_time_data_example'
+    'real_time_data_example',
+    'real_time_data_frontend',
 ]
 
 MIDDLEWARE = [
