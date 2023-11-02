@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'routing',
     'real_time_data_example',
     'real_time_data_frontend',
+    'channel_layer_redis'
 ]
 
 MIDDLEWARE = [
@@ -116,3 +117,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# django channel layer
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
