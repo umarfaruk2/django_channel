@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'routing',
     'real_time_data_example',
     'real_time_data_frontend',
-    'channel_layer_redis'
+    'channel_layer_redis',
+    'channel_with_database',    
 ]
 
 MIDDLEWARE = [

@@ -5,14 +5,15 @@ from channels.routing import ProtocolTypeRouter,URLRouter
 # import routing.routing
 # import real_time_data_example.routing
 # import real_time_data_frontend.routing
-import channel_layer_redis.routing
+# import channel_layer_redis.routing
+import channel_with_database.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_channel.settings')
 
 application = ProtocolTypeRouter({
     'http' : get_asgi_application(),
     'websocket': URLRouter(
-        channel_layer_redis.routing.websocket_urlpatterns
+        channel_with_database.routing.websocket_urlpatterns
     ) 
 })
 

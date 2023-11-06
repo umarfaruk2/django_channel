@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat app</title>
+</head>
+<body>
+   <h3>This is layer from redis</h3> 
+
+
+   <textarea name="" id="chat-log" cols="100" rows="20"></textarea> <br>
+   <input type="text" name="" id="chat-message-input"> <br>
+   <input id="chat-message-send" type="button" value="submit">
+
+   {{group_name|json_script:"group-name"}}
+
+   <script>
+        const groupName = JSON.parse(document.getElementById('group-name').textContent)
+        // var ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/')
+
+        var ws = new WebSocket(
+            'ws://' + window.location.host + '/ws/sc/' + groupName + '/'
+        )
+
+        ws.onopen = function() {
+            console.log('websocket connect...')
+        }
+
+        ws.onmessage = function(event) {
+            // console.log('Message receive from server', event)
+            const data = JSON.parse(event.data) 
+            console.log("My data..", data)
+
+            document.querySelector('#chat-log').value += (data.msg + '\n')
+        }
+
+        ws.onclose = function(event) {
+            console.log('Websocket connection close..')
+        }
+
+        document.getElementById('chat-message-send').onclick = function(event) {
+            const messageInput = document.getElementById('chat-message-input')
+            const message = messageInput.value
+            ws.send(JSON.stringify({
+                'msg': message
+            }))
+            messageInput.value = ''
+        }
+   </script>
+</body>
+</html>
+
