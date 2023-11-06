@@ -9,7 +9,12 @@
    <h3>This is layer from redis</h3> 
 
 
-   <textarea name="" id="chat-log" cols="100" rows="20"></textarea> <br>
+   <textarea name="" id="chat-log" cols="100" rows="20">
+        {% for chat in chats %}
+            {{chat}} 
+        {% endfor %}
+
+   </textarea> <br>
    <input type="text" name="" id="chat-message-input"> <br>
    <input id="chat-message-send" type="button" value="submit">
 
