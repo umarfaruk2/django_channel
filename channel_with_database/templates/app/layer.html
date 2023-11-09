@@ -8,10 +8,9 @@
 <body>
    <h3>This is layer from redis</h3> 
 
-
    <textarea name="" id="chat-log" cols="100" rows="20">
         {% for chat in chats %}
-            {{chat}} 
+            {{chat.content}} 
         {% endfor %}
 
    </textarea> <br>

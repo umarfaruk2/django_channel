@@ -3,6 +3,8 @@ from channels.exceptions import StopConsumer
 from asgiref.sync import async_to_sync
 import json
 from .models import Group, Chat
+from channels.db import database_sync_to_async
+
 
 class MySyncConsumer(SyncConsumer):
     def websocket_connect(self, event):
@@ -15,6 +17,7 @@ class MySyncConsumer(SyncConsumer):
         # group add by channel layer and async to sync
 
         self.group_name = self.scope['url_route']['kwargs']['group_name']  
+        
         async_to_sync(self.channel_layer.group_add)(self.group_name, self.channel_name)
 
         
@@ -27,11 +30,11 @@ class MySyncConsumer(SyncConsumer):
         print('websocket receive..', event)
 
         client_message = json.loads(event['text'])
-
+        print('client message....', client_message['msg'])
         group = Group.objects.get(name = self.group_name)
 
         chat = Chat(
-            name = client_message['msg'],
+            content = client_message['msg'],
             group = group
         )
         chat.save()
@@ -69,6 +72,15 @@ class MyAsyncConsumer(AsyncConsumer):
         # group add by channel layer and async to sync
         await self.channel_layer.group_add(self.group_name, self.channel_name)
 
+        client_message = json.loads(event['text'])
+        print('client message....', client_message['msg'])
+        group = await database_sync_to_async(Group.objects.get)(name = self.group_name)
+
+        chat = Chat(
+            content = client_message['msg'],
+            group = group
+        )
+        await database_sync_to_async(chat.save())
 
         await self.send({
             "type": 'websocket.accept'
