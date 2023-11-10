@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'channel_layer_redis',
     'channel_with_database',    
     'websocket_consumer',
+    'jsonwebsocket_consumer',
 ]
 
 MIDDLEWARE = [

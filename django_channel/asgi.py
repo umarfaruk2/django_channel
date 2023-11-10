@@ -12,14 +12,15 @@ from channels.routing import ProtocolTypeRouter,URLRouter
 # import real_time_data_frontend.routing
 # import channel_layer_redis.routing
 # import channel_with_database.routing
-import websocket_consumer.routing
+# import websocket_consumer.routing
+import jsonwebsocket_consumer.routing
 from channels.auth import AuthMiddlewareStack
 
 application = ProtocolTypeRouter({
     'http' : get_asgi_application(),
     'websocket': AuthMiddlewareStack(
         URLRouter(
-        websocket_consumer.routing.websocket_urlpatterns
+        jsonwebsocket_consumer.routing.websocket_urlpatterns
     )) 
 })
 
