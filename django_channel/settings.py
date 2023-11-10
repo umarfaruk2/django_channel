@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'real_time_data_frontend',
     'channel_layer_redis',
     'channel_with_database',    
+    'websocket_consumer',
 ]
 
 MIDDLEWARE = [

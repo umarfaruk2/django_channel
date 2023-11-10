@@ -11,13 +11,16 @@ from channels.routing import ProtocolTypeRouter,URLRouter
 # import real_time_data_example.routing
 # import real_time_data_frontend.routing
 # import channel_layer_redis.routing
-import channel_with_database.routing
+# import channel_with_database.routing
+import websocket_consumer.routing
+from channels.auth import AuthMiddlewareStack
 
 application = ProtocolTypeRouter({
     'http' : get_asgi_application(),
-    'websocket': URLRouter(
-        channel_with_database.routing.websocket_urlpatterns
-    ) 
+    'websocket': AuthMiddlewareStack(
+        URLRouter(
+        websocket_consumer.routing.websocket_urlpatterns
+    )) 
 })
 
 

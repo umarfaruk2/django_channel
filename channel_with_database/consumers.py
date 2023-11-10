@@ -33,16 +33,23 @@ class MySyncConsumer(SyncConsumer):
         print('client message....', client_message['msg'])
         group = Group.objects.get(name = self.group_name)
 
-        chat = Chat(
-            content = client_message['msg'],
-            group = group
-        )
-        chat.save()
+        # check is user Authenticate
+        if self.scope['user'].is_authenticated:
+            chat = Chat(
+                content = client_message['msg'],
+                group = group
+            )
+            chat.save()
 
-        async_to_sync(self.channel_layer.group_send)(self.group_name, {
-            'type': 'chat.message',
-            'message': event['text']
-        }) 
+            async_to_sync(self.channel_layer.group_send)(self.group_name, {
+                'type': 'chat.message',
+                'message': event['text']
+            }) 
+        else:
+            self.send({
+                'type': 'websocket.send',
+                'text': json.dumps({'msg': 'Login Required'})
+            })
     
     def chat_message(self, event):
         print('event...', event)
